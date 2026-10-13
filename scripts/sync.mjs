@@ -11,6 +11,7 @@ export const FILES = [
   '.prettierrc',
   '.prettierignore',
   '.npmrc.dist',
+  '.nvmrc',
   '.husky/pre-push',
   '.husky/commit-msg',
   'vitest.config.js',
