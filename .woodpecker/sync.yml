@@ -1,0 +1,22 @@
+# Pushing the template propagates shared deps/configs to the CLIs as `chore/template-sync` PRs.
+when:
+  - event: push
+    branch: main
+  - event: manual
+
+steps:
+  - name: verify
+    image: node:22
+    commands:
+      - npm ci
+      - npm run husky:pre-push
+      - node --test scripts/sync.test.mjs
+
+  - name: propagate
+    image: node:22
+    environment:
+      TARGETS: outdated
+      GITHUB_TOKEN:
+        from_secret: github_token
+    commands:
+      - bash scripts/propagate.sh
