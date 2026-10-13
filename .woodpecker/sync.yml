@@ -15,7 +15,7 @@ steps:
   - name: propagate
     image: node:22
     environment:
-      TARGETS: outdated
+      TARGETS: outdated skillslint structurelint
       GITHUB_TOKEN:
         from_secret: github_token
     commands:
