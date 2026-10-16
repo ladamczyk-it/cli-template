@@ -22,8 +22,8 @@ test('sync bumps shared versions and keeps project-specific bits', () => {
       devDependencies: { vitest: '5.0.0', husky: '9.0.0' },
       scripts: { test: 'vitest run' },
       engines: { node: '>=22' },
-      exports: { '.': { import: './lib/index.mjs' } },
-      main: './lib/index.mjs',
+      exports: { '.': { import: './lib/index.js' } },
+      main: './lib/index.js',
     })
   );
   write(
@@ -35,6 +35,7 @@ test('sync bumps shared versions and keeps project-specific bits', () => {
       scripts: { test: 'old', dev: 'node .' },
       exports: { '.': { import: './lib/index.mjs', require: './lib/index.cjs' } },
       main: './lib/index.cjs',
+      module: './lib/index.mjs',
     })
   );
 
@@ -45,8 +46,9 @@ test('sync bumps shared versions and keeps project-specific bits', () => {
   assert.deepEqual(pkg.devDependencies, { vitest: '5.0.0', husky: '9.0.0' });
   assert.deepEqual(pkg.scripts, { test: 'vitest run', dev: 'node .' });
   assert.deepEqual(pkg.engines, { node: '>=22' });
-  assert.deepEqual(pkg.exports, { '.': { import: './lib/index.mjs' } });
-  assert.equal(pkg.main, './lib/index.mjs');
+  assert.deepEqual(pkg.exports, { '.': { import: './lib/index.js' } });
+  assert.equal(pkg.main, './lib/index.js');
+  assert.equal('module' in pkg, false);
   assert.equal(readFileSync(join(target, 'vitest.config.js'), 'utf-8'), 'custom');
   assert.equal(readFileSync(join(target, 'tsconfig.json'), 'utf-8'), 'template tsconfig.json');
 });

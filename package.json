@@ -14,12 +14,11 @@
   "exports": {
     ".": {
       "types": "./lib/src/index.d.ts",
-      "import": "./lib/index.mjs"
+      "import": "./lib/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./lib/index.mjs",
-  "module": "./lib/index.mjs",
+  "main": "./lib/index.js",
   "types": "./lib/src/index.d.ts",
   "bin": {
     "cli-template": "bin/cli.js"

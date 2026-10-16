@@ -17,7 +17,7 @@ export default defineConfig([
       {
         dir: './lib',
         format: 'esm',
-        entryFileNames: '[name].mjs',
+        entryFileNames: '[name].js',
       },
     ],
   },
