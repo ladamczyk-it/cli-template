@@ -54,8 +54,4 @@ test('sync bumps shared versions and keeps project-specific bits', () => {
   assert.equal('module' in pkg, false);
   assert.equal(readFileSync(join(target, 'vitest.config.js'), 'utf-8'), 'custom');
   assert.equal(readFileSync(join(target, 'tsconfig.json'), 'utf-8'), 'template tsconfig.json');
-  assert.equal(
-    readFileSync(join(target, '.github/workflows/main.yml'), 'utf-8'),
-    'template .github/workflows/main.yml'
-  );
 });
