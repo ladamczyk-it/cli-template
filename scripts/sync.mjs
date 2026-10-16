@@ -48,7 +48,7 @@ export function sync(templateDir, targetDir) {
     }
   }
   pkg.scripts = { ...pkg.scripts, ...tpl.scripts };
-  pkg.engines = tpl.engines;
+  for (const field of ['engines', 'exports', 'main', 'module', 'types']) pkg[field] = tpl[field];
 
   writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`);
 }
