@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { test } from 'node:test';
 
 import { FILES, sync } from './sync.mjs';
@@ -9,9 +9,12 @@ import { FILES, sync } from './sync.mjs';
 test('sync bumps shared versions and keeps project-specific bits', () => {
   const tpl = mkdtempSync(join(tmpdir(), 'tpl-'));
   const target = mkdtempSync(join(tmpdir(), 'target-'));
-  const write = (dir, file, content) => writeFileSync(join(dir, file), content);
+  const write = (dir, file, content) => {
+    mkdirSync(dirname(join(dir, file)), { recursive: true });
+    writeFileSync(join(dir, file), content);
+  };
 
-  for (const file of FILES.filter((f) => !f.includes('/'))) write(tpl, file, `template ${file}`);
+  for (const file of FILES) write(tpl, file, `template ${file}`);
   write(target, 'vitest.config.js', 'custom');
   write(target, '.templateignore', 'vitest.config.js\n.husky/pre-push\n.husky/commit-msg\n');
   write(
@@ -51,4 +54,8 @@ test('sync bumps shared versions and keeps project-specific bits', () => {
   assert.equal('module' in pkg, false);
   assert.equal(readFileSync(join(target, 'vitest.config.js'), 'utf-8'), 'custom');
   assert.equal(readFileSync(join(target, 'tsconfig.json'), 'utf-8'), 'template tsconfig.json');
+  assert.equal(
+    readFileSync(join(target, '.github/workflows/main.yml'), 'utf-8'),
+    'template .github/workflows/main.yml'
+  );
 });

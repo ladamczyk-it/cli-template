@@ -16,6 +16,7 @@ export const FILES = [
   '.husky/commit-msg',
   'vitest.config.js',
   'rolldown.config.js',
+  '.github/workflows/main.yml',
 ];
 
 const readJson = (path) => JSON.parse(readFileSync(path, 'utf-8'));
